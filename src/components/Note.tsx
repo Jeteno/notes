@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface NoteProps {
-  note: { id: number; text: string };
-  onDelete: (id: number) => void;
+   note: { id: number; text: string };
+   onDelete: (id: number) => void;
 }
 
 const Note: React.FC<NoteProps> = ({ note, onDelete }) => {
@@ -15,15 +15,27 @@ const Note: React.FC<NoteProps> = ({ note, onDelete }) => {
 
   const handleSaveClick = () => {
     setIsEditing(false);
+    // Сохраняем отредактированный текст в LocalStorage
+    localStorage.setItem(`note-${note.id}`, editedText);
   };
 
   const handleDeleteClick = () => {
     onDelete(note.id);
+    // Удаляем заметку из LocalStorage
+    localStorage.removeItem(`note-${note.id}`);
   };
 
   const handleNoteTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedText(e.target.value);
   };
+
+  // Получаем сохраненные заметки при загрузке компонента
+  useEffect(() => {
+    const savedText = localStorage.getItem(`note-${note.id}`);
+    if (savedText) {
+      setEditedText(savedText);
+    }
+  }, [note.id]);
 
   return (
     <li>

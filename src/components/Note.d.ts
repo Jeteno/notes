@@ -1,10 +1,7 @@
 import React from 'react';
-interface NoteProps {
-    note: {
-        id: number;
-        text: string;
-    };
-    onDelete: (id: number) => void;
+interface Note {
+    id: number;
+    text: string;
 }
-declare const Note: React.FC<NoteProps>;
+declare const Note: React.FC;
 export default Note;
